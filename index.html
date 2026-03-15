@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Yash 💖</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body, html{
+margin:0;
+padding:0;
+
+font-family:'Poppins',"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+
+background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 100%);
+min-height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+overflow-x:hidden;
+}
+
+#background-elements{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+overflow:hidden;
+}
+
+.floating-item{
+position:absolute;
+bottom:-50px;
+animation:floatUp linear infinite;
+opacity:.6;
+}
+
+@keyframes floatUp{
+to{
+transform:translateY(-110vh) rotate(360deg);
+}
+}
+
+/* cursor hearts */
+
+.trail-heart{
+position:fixed;
+pointer-events:none;
+font-size:20px;
+animation:fadeOutUp 1s forwards;
+z-index:50;
+}
+
+@keyframes fadeOutUp{
+0%{opacity:1;transform:scale(1)}
+100%{opacity:0;transform:scale(.5) translateY(-30px)}
+}
+
+/* card */
+
+.glass-card{
+background:rgba(255,255,255,.25);
+backdrop-filter:blur(12px);
+
+border-radius:24px;
+padding:30px;
+
+width:90%;
+max-width:400px;
+
+text-align:center;
+}
+
+h1{
+color:#d81b60;
+font-size:28px;
+margin-top:0;
+}
+
+/* love jar */
+
+.love-jar{
+background:rgba(255,255,255,.4);
+padding:20px;
+border-radius:15px;
+margin:20px 0;
+cursor:pointer;
+}
+
+.jar-title{
+font-weight:600;
+color:#ad1457;
+margin-bottom:10px;
+}
+
+#reason-text{
+min-height:50px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+/* charge heart */
+
+.charge-container{
+font-size:80px;
+position:relative;
+cursor:pointer;
+}
+
+#heart-fill{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:0;
+color:#ff3366;
+overflow:hidden;
+display:flex;
+align-items:flex-end;
+}
+
+#heart-status{
+margin-top:10px;
+color:#ad1457;
+font-weight:600;
+}
+
+/* surprise box */
+
+#surprise-box{
+font-size:50px;
+cursor:pointer;
+animation:wobble 1s infinite;
+}
+
+@keyframes wobble{
+0%,100%{transform:rotate(-10deg)}
+50%{transform:rotate(10deg)}
+}
+
+/* stickers */
+
+.stickers{
+font-size:30px;
+margin-top:20px;
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="background-elements"></div>
+
+<div class="glass-card">
+
+<h1>For Yash 💖</h1>
+
+<p style="font-size:14px">Just a little something for you</p>
+
+<div class="love-jar" onclick="nextReason()">
+
+<div class="jar-title">🫙 Tap Me</div>
+
+<div id="reason-text">You have the sweetest smile</div>
+
+</div>
+
+<div class="charge-section">
+
+<div class="charge-container" id="heart-container">
+
+♡
+
+<div id="heart-fill">♥</div>
+
+</div>
+
+<div id="heart-status">Hold to send hug</div>
+
+</div>
+
+<div style="margin:20px">
+
+<div id="surprise-box" onclick="openBox()">🎁</div>
+
+</div>
+
+<div class="stickers">
+
+🫂 🧸 🥺
+
+</div>
+
+</div>
+
+<script>
+
+/* floating background */
+
+const bg=document.getElementById("background-elements")
+
+const items=['💖','💗','💞','💘','🤍']
+
+for(let i=0;i<25;i++){
+
+let el=document.createElement("div")
+
+el.className="floating-item"
+
+el.innerText=items[Math.floor(Math.random()*items.length)]
+
+el.style.left=Math.random()*100+"vw"
+
+el.style.fontSize=(Math.random()*20+10)+"px"
+
+el.style.animationDuration=(Math.random()*10+5)+"s"
+
+bg.appendChild(el)
+
+}
+
+/* cursor hearts */
+
+document.addEventListener("mousemove",createTrail)
+
+function createTrail(e){
+
+if(Math.random()>0.3)return
+
+let heart=document.createElement("div")
+
+heart.className="trail-heart"
+
+heart.innerText="💖"
+
+heart.style.left=e.clientX+"px"
+
+heart.style.top=e.clientY+"px"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>heart.remove(),1000)
+
+}
+
+/* love jar */
+
+const reasons=[
+
+"You have the sweetest smile",
+
+"You always make me laugh",
+
+"I love talking to you",
+
+"You make everything better",
+
+"You are special to me"
+
+]
+
+let index=0
+
+function nextReason(){
+
+index=(index+1)%reasons.length
+
+document.getElementById("reason-text").innerText=reasons[index]
+
+}
+
+/* surprise */
+
+let opened=false
+
+function openBox(){
+
+if(opened)return
+
+opened=true
+
+document.getElementById("surprise-box").innerText="🎉"
+
+confetti({
+
+particleCount:150,
+
+spread:100,
+
+origin:{y:.6}
+
+})
+
+}
+
+/* hug heart */
+
+let hold
+
+let charge=0
+
+const fill=document.getElementById("heart-fill")
+
+const status=document.getElementById("heart-status")
+
+const container=document.getElementById("heart-container")
+
+container.addEventListener("mousedown",start)
+
+window.addEventListener("mouseup",stop)
+
+function start(){
+
+hold=setInterval(()=>{
+
+charge+=3
+
+fill.style.height=charge+"%"
+
+if(charge>=100){
+
+clearInterval(hold)
+
+status.innerText="Hug sent 🫂💖"
+
+confetti({
+
+particleCount:200,
+
+spread:120
+
+})
+
+}
+
+},50)
+
+}
+
+function stop(){
+
+clearInterval(hold)
+
+if(charge<100){
+
+charge=0
+
+fill.style.height="0%"
+
+}
+
+}
+
+</script>
+
+</body>
+  </html>
